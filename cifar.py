@@ -314,7 +314,7 @@ def main():
   torch.manual_seed(1)
   np.random.seed(1)
 
-  if args.latent:
+  if args.latent_composition:
     gan = 'stylegan'
     data = 'ffhq'
     nets = load_nets(gan, data)
