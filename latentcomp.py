@@ -1,14 +1,14 @@
 import torch
 import numpy as np
-from latent_composition.utils import show, renormalize, masking
-from latent_composition.utils import util, imutil, pbar, losses, inversions
-from latent_composition.networks import networks
+from utils import show, renormalize, masking
+from utils import util, imutil, pbar, losses, inversions
+from networks import networks
 from PIL import Image
 import os
 from torchvision import transforms
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
-from latent_composition.networks.psp import id_loss
+from networks.psp import id_loss
 
 os.environ['TORCH_EXTENSIONS_DIR'] = '/tmp/torch_cpp/' # needed for stylegan to run
 os.environ['CUDA_DEVICE_ORDER'] = 'PCI_BUS_ID'
