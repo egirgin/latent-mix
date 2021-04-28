@@ -12,7 +12,7 @@ from networks.psp import id_loss
 
 os.environ['TORCH_EXTENSIONS_DIR'] = '/tmp/torch_cpp/' # needed for stylegan to run
 os.environ['CUDA_DEVICE_ORDER'] = 'PCI_BUS_ID'
-os.environ['CUDA_VISIBLE_DEVICES'] = 0
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
 def load_nets(gan, data):
     
