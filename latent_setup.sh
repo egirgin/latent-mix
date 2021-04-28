@@ -1,5 +1,3 @@
-cd latent_compostion
-
 bash resources/download_resources.sh
 
 pip install ninja
