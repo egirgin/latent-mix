@@ -187,12 +187,17 @@ def aug(image, preprocess, latent_nets=None):
       op = np.random.choice(aug_list)
       image_aug = op(image_aug, args.aug_severity)
     # Preprocessing commutes since all coefficients are convex
-    print("Mix shape: {}".format(mix.shape))
-    print("Image Aug shape: {}".format(image_aug.shape))
+    #print("Mix shape: {}".format(mix.shape))
+    
+    #processed_aug = preprocess(image_aug)
+    #print("Operation: {}".format(op))
+    #print("Image Aug shape: {}".format(processed_aug.shape))
     mix += ws[i] * preprocess(image_aug)
 
   if latent_nets:
+    print("Running composition.")
     mixed = random_composition(latent_nets, image, mix, outdim, gtype='stylegan')
+    print("Composited in latent space")
   else:
     mixed = (1 - m) * preprocess(image) + m * mix
   return mixed
@@ -230,9 +235,11 @@ class AugMixDataset(torch.utils.data.Dataset):
 
 def train(net, train_loader, optimizer, scheduler):
   """Train for one epoch."""
+  print("Inside training")
   net.train()
   loss_ema = 0.
   for i, (images, targets) in enumerate(train_loader):
+    print("iter")
     optimizer.zero_grad()
 
     if args.no_jsd:
@@ -265,8 +272,8 @@ def train(net, train_loader, optimizer, scheduler):
     optimizer.step()
     scheduler.step()
     loss_ema = loss_ema * 0.9 + float(loss) * 0.1
-    if i % args.print_freq == 0:
-      print('Train Loss {:.3f}'.format(loss_ema))
+    #if i % args.print_freq == 0:
+    print('Train Loss {:.3f}'.format(loss_ema))
 
   return loss_ema
 
@@ -321,6 +328,7 @@ def main():
     data = 'ffhq'
     nets = load_nets(gan, data)
     outdim = nets.setting['outdim']
+    augmentations.IMAGE_SIZE = outdim
     train_transform = transforms.Compose([
                 transforms.Resize(outdim),
                 transforms.CenterCrop(outdim),
@@ -352,6 +360,7 @@ def main():
     num_classes = 100
 
   train_data = AugMixDataset(train_data, preprocess, args.no_jsd)
+  print("AugMixDataset is ready!")
   train_loader = torch.utils.data.DataLoader(
       train_data,
       batch_size=args.batch_size,
