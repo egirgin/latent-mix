@@ -187,6 +187,8 @@ def aug(image, preprocess, latent_nets=None):
       op = np.random.choice(aug_list)
       image_aug = op(image_aug, args.aug_severity)
     # Preprocessing commutes since all coefficients are convex
+    print("Mix shape: {}".format(mix.shape))
+    print("Image Aug shape: {}".format(image_aug.shape))
     mix += ws[i] * preprocess(image_aug)
 
   if latent_nets:
