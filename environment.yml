@@ -1,4 +1,4 @@
-name: latent-composition
+name: latent-mix
 channels:
   - pytorch
   - conda-forge

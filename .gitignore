@@ -1,0 +1,7 @@
+resources
+models
+data
+snapshots
+networks
+*__pycache__*
+

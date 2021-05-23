@@ -150,7 +150,7 @@ CORRUPTIONS = [
 ]
 
 gan = 'stylegan'
-data = 'ffhq'
+data = 'car'
 
 nets = load_nets(gan, data)
 outdim = nets.setting['outdim']
@@ -235,11 +235,11 @@ class AugMixDataset(torch.utils.data.Dataset):
 
 def train(net, train_loader, optimizer, scheduler):
   """Train for one epoch."""
-  print("Inside training")
+
   net.train()
   loss_ema = 0.
   for i, (images, targets) in enumerate(train_loader):
-    print("iter")
+
     optimizer.zero_grad()
 
     if args.no_jsd:
