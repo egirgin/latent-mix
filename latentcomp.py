@@ -142,13 +142,18 @@ def random_composition(nets, img1, img2, outdim, gtype='stylenet'):
         show.flush()
         """
 
-        composite = mask1[:, [0], :, :] + mask2[:, [0], :, :]
+        #composite = mask1[:, [0], :, :] + mask2[:, [0], :, :]
 
-        composite = composite.clamp(1.0, 2.0) -1 
+        #composite = composite.clamp(1.0, 2.0) -1 
 
-        comp_image = img1 * (1-mask1[:, 0]) + img2 * (1-composite - (1-mask1[:,0]) )
+        #comp_image = img1 * (1-mask1[:, 0]) + img2 * (1-composite - (1-mask1[:,0]) )
 
-        out = nets.invert(comp_image, composite)    
+        #out = nets.invert(comp_image, composite)
+
+        alt_image = img1 * (1-mask1[:, 0]) + img2 * (1- (1-mask1[:,0]) )
+
+        out2 = nets.invert(alt_image, mask1[:, [0], :, :])
+
         """
         show.a(['Mask Composite', renormalize.as_image(composite[0]).resize((256, 256), Image.ANTIALIAS)])
         show.a(['Image Composite', renormalize.as_image(comp_image[0]).resize((256, 256), Image.ANTIALIAS)])
@@ -156,6 +161,6 @@ def random_composition(nets, img1, img2, outdim, gtype='stylenet'):
         show.flush()
         """
 
-        return out
+        return out2
 
         
