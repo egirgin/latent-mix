@@ -17,6 +17,14 @@ import augmentations
 import numpy as np
 from PIL import Image
 
+import pickle
+import argparse
+
+import torch
+import torchvision
+
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
 # CIFAR-10 constants
 MEAN = [0.4914, 0.4822, 0.4465]
 STD = [0.2023, 0.1994, 0.2010]
@@ -67,4 +75,46 @@ def augment_and_mix(image, severity=3, width=3, depth=-1, alpha=1.):
 
   mixed = (1 - m) * normalize(image) + m * mix
   return mixed
+
+
+
+transform = torchvision.transforms.Compose(
+    [torchvision.transforms.ToTensor(),
+     torchvision.transforms.Resize((256, 256))] )
+
+
+church = torchvision.datasets.LSUN(root=".", classes=['church_outdoor_val'], transform=transform)
+living_room = torchvision.datasets.LSUN(root=".", classes=['living_room_val'], transform=transform)
+
+
+dataset = []
+for i in range(len(church)):
+    dataset.append(church[i])
+    dataset.append((living_room[i][0], 1))
+
+del church, living_room
+
+imgs = [item[0].permute(1, 2, 0).to("cpu").numpy() for item in dataset]
+labels = torch.tensor([item[1] for item in dataset]).to(device)
+
+del dataset
+
+mixed_dataset = []
+
+
+for img in imgs:
+  mixed = augment_and_mix(img)
+  mixed_dataset.append(mixed)
+
+mixed_imgs = torch.cat([torch.from_numpy(item).permute(2,0,1).to(device, dtype=torch.float).unsqueeze(0) for item in mixed_dataset], dim=0)
+
+
+with open("./augmix_imgs.pickle", "bw+") as picklefile:
+  pickle.dump(mixed_imgs, picklefile)
+        
+        
+with open("./augmix_labels.pickle", "bw+") as picklefile:
+  pickle.dump(labels, picklefile)
+
+
 

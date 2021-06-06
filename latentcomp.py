@@ -162,5 +162,3 @@ def random_composition(nets, img1, img2, outdim, gtype='stylenet'):
         """
 
         return out2
-
-        
