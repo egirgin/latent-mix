@@ -1,5 +1,4 @@
 import pickle
-import argparse
 import random
 
 import torch
@@ -15,12 +14,6 @@ os.environ['TORCH_EXTENSIONS_DIR'] = '/tmp/torch_cpp/' # needed for stylegan to 
 os.environ['CUDA_DEVICE_ORDER'] = 'PCI_BUS_ID'
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
-
-parser = argparse.ArgumentParser()
-parser.add_argument("--inv", action="store_true")
-parser.add_argument("--comp", action="store_true")
-
-args = parser.parse_args()
 
 def load_nets(gan, data):
     

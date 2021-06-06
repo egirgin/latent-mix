@@ -87,6 +87,7 @@ if args.adv:
 
 
 if args.inv: # Image inversion
+    print("Adding Inv samples")
     inv_images = inv_dataset(church_imgs, livingroom_imgs)
     inv_labels = torch.cat([labels_church, labels_livingroom], dim=0)
 
@@ -96,6 +97,7 @@ if args.inv: # Image inversion
     del inv_images, inv_labels
 
 if args.comp:
+    print("Adding Comp samples")
     comp_images = comp_dataset(church_imgs, livingroom_imgs)
     comp_labels = torch.cat([labels_church, labels_livingroom], dim=0)
 
@@ -106,6 +108,7 @@ if args.comp:
 
 
 if args.augmix:
+    print("Adding AugMix samples")
     from augment_and_mix import augment_and_mix
 
     mixed_imgs = [item[0].permute(1, 2, 0).to("cpu").numpy() for item in dataset_default]
